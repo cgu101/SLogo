@@ -3,19 +3,77 @@ package backend.factory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-
 import backend.node.DUVALL;
 import backend.node.Node;
-import backend.node.commands.*;
-import backend.node.control.*;
-import backend.node.operations.*;
-import backend.node.types.Constant;
+import backend.node.commands.ASK;
+import backend.node.commands.ASKWITH;
+import backend.node.commands.BK;
+import backend.node.commands.CS;
+import backend.node.commands.FD;
+import backend.node.commands.GOTO;
+import backend.node.commands.HEADING;
+import backend.node.commands.HOME;
+import backend.node.commands.HT;
+import backend.node.commands.ID;
+import backend.node.commands.LT;
+import backend.node.commands.PD;
+import backend.node.commands.PENDOWNP;
+import backend.node.commands.PU;
+import backend.node.commands.RT;
+import backend.node.commands.SETH;
+import backend.node.commands.SHOWINGP;
+import backend.node.commands.ST;
+import backend.node.commands.TELL;
+import backend.node.commands.TOWARDS;
+import backend.node.commands.TURTLES;
+import backend.node.commands.XCOR;
+import backend.node.commands.YCOR;
+import backend.node.control.DOTIMES;
+import backend.node.control.FOR;
+import backend.node.control.GROUPSTART;
+import backend.node.control.IF;
+import backend.node.control.IFELSE;
+import backend.node.control.LISTSTART;
+import backend.node.control.MAKEVAR;
+import backend.node.control.REPEAT;
+import backend.node.control.TOCOMMAND;
+import backend.node.control.USERCOMMAND;
 import backend.node.control.Variable;
-import backend.node.display.*;
+import backend.node.display.CLEARSTAMPS;
+import backend.node.display.PC;
+import backend.node.display.SETBG;
+import backend.node.display.SETPALETTE;
+import backend.node.display.SETPC;
+import backend.node.display.SETPS;
+import backend.node.display.SETSH;
+import backend.node.display.SH;
+import backend.node.display.STAMP;
+import backend.node.operations.AND;
+import backend.node.operations.ATAN;
+import backend.node.operations.COS;
+import backend.node.operations.DIFFERENCE;
+import backend.node.operations.EQUALP;
+import backend.node.operations.GREATERP;
+import backend.node.operations.LESSP;
+import backend.node.operations.LOG;
+import backend.node.operations.MINUS;
+import backend.node.operations.NOT;
+import backend.node.operations.NOTEQUALP;
+import backend.node.operations.OR;
+import backend.node.operations.PI;
+import backend.node.operations.POW;
+import backend.node.operations.PRODUCT;
+import backend.node.operations.QUOTIENT;
+import backend.node.operations.RANDOM;
+import backend.node.operations.REMAINDER;
+import backend.node.operations.SIN;
+import backend.node.operations.SUM;
+import backend.node.operations.TAN;
+import backend.node.types.Constant;
 import backend.parser.SyntaxType;
 
 public class CommandFactory {
-	private static HashMap<SyntaxType, Class> myRegisteredCommands = new HashMap<SyntaxType, Class>();
+	private static HashMap<SyntaxType, Class<?>> myRegisteredCommands = new HashMap<SyntaxType, Class<?>>();
 
 	static {
 		//// #
@@ -36,7 +94,7 @@ public class CommandFactory {
 		registerNode(SyntaxType.CLEARSCREEN, CS.class);
 		registerNode(SyntaxType.XCOORDINATE, XCOR.class);
 		registerNode(SyntaxType.YCOORDINATE, YCOR.class);
-		
+
 		//// #
 		//// # Turtle Queries
 		//// #
@@ -44,6 +102,7 @@ public class CommandFactory {
 		registerNode(SyntaxType.YCOORDINATE, YCOR.class);// YCOORDINATE,
 		registerNode(SyntaxType.HEADING, HEADING.class);// HEADING,
 		registerNode(SyntaxType.ISPENDOWN, PENDOWNP.class);
+		registerNode(SyntaxType.ISSHOWING, SHOWINGP.class);
 		// ISSHOWING,
 		//// #
 		//// # Math Operations
@@ -93,7 +152,7 @@ public class CommandFactory {
 		registerNode(SyntaxType.GETPENCOLOR, PC.class);
 		registerNode(SyntaxType.GETSHAPE, SH.class);
 		registerNode(SyntaxType.STAMP, STAMP.class);
-		registerNode(SyntaxType.CLEARSTAMP, CLEARSTAMP.class);
+		registerNode(SyntaxType.CLEARSTAMPS, CLEARSTAMPS.class);
 		registerNode(SyntaxType.CLEARSCREEN, CS.class);
 		//// #
 		//// # Multiple Turtle Commands
@@ -117,15 +176,14 @@ public class CommandFactory {
 		
 	}
 
-	public static void registerNode(SyntaxType type, Class nodeClass) {
+	public static void registerNode(SyntaxType type, Class<?> nodeClass) {
 		myRegisteredCommands.put(type, nodeClass);
 	}
 
 	public Node createNode(SyntaxType type) {
 		Node result = null;
-		int a = myRegisteredCommands.size();
-		Class nodeClass = (Class) myRegisteredCommands.get(type);
-		Constructor nodeConstructor = null;
+		Class<?> nodeClass = (Class<?>) myRegisteredCommands.get(type);
+		Constructor<?> nodeConstructor = null;
 		try {
 			nodeConstructor = nodeClass.getDeclaredConstructor(new Class[] {});
 			result = (Node) nodeConstructor.newInstance();

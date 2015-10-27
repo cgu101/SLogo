@@ -7,11 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import java.util.ResourceBundle;
-
-import exceptions.NotImplementedException;
 import exceptions.WontImplementException;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 /**
  * @author loganrooper
@@ -20,19 +17,19 @@ import javafx.scene.paint.Paint;
 public class DisplayProperties extends Observable {
 	private static final String DEFAULT_GUI_RESOURCE = "GUI.view";
 	protected static ResourceBundle myResource;
-	Map<Integer, Color> colorPalette;
-	Color bgColor;
+	private Map<Integer, Color> colorPalette;
 	private int myPenColor;
 	private double penThickness;
-	private String lineType;
+	private String penState;
+	private Color bgColor;
 	private Boolean penDown;
 
 	public DisplayProperties() {
 		// Defaults
 		myResource = ResourceBundle.getBundle(DEFAULT_GUI_RESOURCE);
 		myPenColor = 0; // Color.valueOf(myResource.getString("defaultPenColor"));
-		penThickness = Integer.parseInt(myResource.getString("defaultLineThickness"));
-		setLineType(myResource.getString("defaultLineType"));
+		penThickness = Integer.parseInt(myResource.getString("defaultPenThickness"));
+		setPenState(myResource.getString("defaultPenState"));
 		bgColor = Color.valueOf(myResource.getString("defaultBackgroundColor"));
 		colorPalette = new HashMap<Integer, Color>();
 		createDefaultPalette();
@@ -59,16 +56,12 @@ public class DisplayProperties extends Observable {
 	}
 
 	public String getPenState() {
-		return lineType;
+		return penState;
 	}
 
 	public void setPenState(String state) {
-		this.lineType = state;
+		this.penState = state;
 		penUpdate();
-	}
-
-	public void setPenShape(int index) {
-		throw new WontImplementException();
 	}
 
 	private void createDefaultPalette() {
@@ -103,10 +96,6 @@ public class DisplayProperties extends Observable {
 		return bgColor;
 	}
 
-	public double getShape() {
-		throw new WontImplementException();
-	}
-
 	private void penUpdate() {
 		this.setChanged();
 		notifyObservers("pen");
@@ -127,14 +116,6 @@ public class DisplayProperties extends Observable {
 		notifyObservers("clear");
 	}
 
-	public String getLineType() {
-		return lineType;
-	}
-
-	public void setLineType(String lineType) {
-		this.lineType = lineType;
-	}
-
 	public Boolean getPenDown() {
 		return penDown;
 	}
@@ -146,4 +127,13 @@ public class DisplayProperties extends Observable {
 	public double getPenColorID() {
 		return myPenColor;
 	}
+
+	
+	public void setPenShape(int index) {
+		throw new WontImplementException();	
+	}
+	
+	public double getPenShape() {
+		throw new WontImplementException();
+   }
 }

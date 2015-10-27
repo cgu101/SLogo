@@ -1,9 +1,7 @@
 package GUI.button;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -16,12 +14,19 @@ import datatransferobjects.UserInputTransferObject;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import sharedobjects.UserInput;
 
 public class ButtonFactory {
-    private static final String DEFAULT_RESOURCE_BUTTON = "GUI.button.buttons";
-    protected static ResourceBundle myResource;
+	private static final String DEFAULT_RESOURCE_BUTTON = "GUI.button.buttons";
+	protected static ResourceBundle myResource;
 
     private Map<String, AButton> myButtons;
     private CommandPromptDisplayBox myCommandBox; 
@@ -30,7 +35,7 @@ public class ButtonFactory {
     private TurtleGroupObserver myTurtleGroup;
     private UserInput myUserInputObservable;
     
-    public ButtonFactory (CommandPromptDisplayBox commandBox, MessageDisplayBoxObserver messageBox, CommandHistoryBox historyDisplayBox, TurtleGroupObserver turtleGroup, UserInput userInputObservable) {
+    public ButtonFactory (CommandPromptDisplayBox commandBox, MessageDisplayBoxObserver messageBox, CommandHistoryBox historyDisplayBox, TurtleGroupObserver turtleGroup, UserInput userInputObservable, BorderPane main) {
         myResource = ResourceBundle.getBundle(DEFAULT_RESOURCE_BUTTON);
         this.myCommandBox = commandBox;
         this.myHistoryDisplayBox = historyDisplayBox;
@@ -53,11 +58,6 @@ public class ButtonFactory {
                 Constructor<?> c =
                         Class.forName("GUI.button."+buttonClassName)
                         .getConstructor(EventHandler.class);
-//                AButton button = (AButton) c.newInstance(new EventHandler<ActionEvent>() {
-//                    @Override public void handle(ActionEvent e) {
-//                        help();
-//                    }
-//                });
                 AButton button = (AButton) c.newInstance(buttonEventHandle.get(buttonClassName));
                 myButtons.put(buttonClassName, button);
             }catch(Exception e){
@@ -65,7 +65,6 @@ public class ButtonFactory {
             }
         }
     }
-    
     
     public Map<String, AButton> getButtons(){
         return myButtons;
@@ -103,18 +102,38 @@ public class ButtonFactory {
         UserInputTransferObject ut = new UserInputTransferObject(myUserInputObservable.getCurrentLanguage(), myUserInputObservable.getUserInput());
         try{
             myUserInputObservable.notifyObservers(ut);
-            
         }catch(Exception e){
-            e.printStackTrace();
             myMessageBox.setMessage("Error: " + e.getMessage());
-//            myMessageBox.setMessage(e.getStackTrace().toString());
         }
     }
-    private void helpButtonEvent() {
-        try {
-            Desktop.getDesktop().browse(new URL("http://www.cs.duke.edu/courses/fall15/compsci308/assign/03_slogo/commands.php").toURI());
-            Desktop.getDesktop().browse(new URL("http://www.cs.duke.edu/courses/fall15/compsci308/assign/03_slogo/commands2.php").toURI());
-        } catch (Exception e) {};
-    }
 
+	private void helpButtonEvent() {
+		Group rootMain = new Group();
+		Stage stage = new Stage();
+		stage.setTitle("Help Page");
+		Scene scene = new Scene(new Group());
+
+		stage.setWidth(1200);
+		stage.setHeight(700);
+		stage.show();
+
+		WebView browser = new WebView();
+		String url = getClass().getClassLoader().getResource("help.html").toExternalForm();
+
+		WebEngine webEngine = browser.getEngine();
+		webEngine.load(url); 
+
+		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.setContent(browser);
+		scrollPane.setPrefSize(1200, 700);
+		scrollPane.setFitToHeight(true);
+		scrollPane.setFitToWidth(true);
+
+		rootMain.getChildren().add(scrollPane);
+		scene.setRoot(rootMain);
+
+		stage.setScene(scene);
+		stage.show();
+
+	}
 }

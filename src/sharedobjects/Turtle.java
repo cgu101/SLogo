@@ -1,7 +1,5 @@
 package sharedobjects;
 
-import java.util.Observable;
-
 public class Turtle {
 	private int ID;
 	private double[] position;
@@ -13,7 +11,7 @@ public class Turtle {
 	public Turtle(int id){
 		setID(id);
 		position = new double[]{0.0,0.0};
-		oldPosition = new double[]{0.0,0.0};;
+		oldPosition = new double[]{0.0,0.0};
 		heading = 90;
 		showing = true;
 		active = true;

@@ -1,12 +1,6 @@
-/**
- * 
- */
 package backend.node.commands;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import backend.node.types.OneArgumentNode;
+import backend.node.Node;
 import responses.Response;
 import responses.Success;
 import sharedobjects.ManipulateController;
@@ -15,7 +9,7 @@ import sharedobjects.ManipulateController;
  * @author loganrooper
  *
  */
-public class TELL extends OneArgumentNode {
+public class TELL extends Node {
 	@Override
 	public Response run(ManipulateController mc) {
 		// Call setTurtleIDS(array of ints) -> this should create turtles as well

@@ -1,9 +1,7 @@
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-
 import GUI.SlogoView;
 import backend.parser.Parser;
 import javafx.application.Application;
@@ -29,38 +27,25 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		ObserverFactory observerFactory = new ObserverFactory();
-
-		/* 4 */ slogoViewFrontEnd = new SlogoView(observerFactory.getGuiCanvas(), observerFactory.getGuiTurtleGroup());
-		// TODO:
-		// frontEnd
-		// observers
-		// list
+		slogoViewFrontEnd = new SlogoView(observerFactory.getGuiCanvas(), observerFactory.getGuiTurtleGroup());
 		observerFactory.createObserversWithGUIDependancies(slogoViewFrontEnd);
 
 		try {
-			// TODO: workspace must create an observable list
-			/* 1 */Workspace currWorkspace = new Workspace();
-			/* 2 */ManipulateController manipulateController = new ManipulateController(currWorkspace);
-
-			/* 3 */Parser parser = new Parser(manipulateController);
-
+			Workspace currWorkspace = new Workspace();
+			ManipulateController manipulateController = new ManipulateController(currWorkspace);
+			Parser parser = new Parser(manipulateController);
 			List<Observable> observables = new ArrayList<Observable>();
 			observables.addAll(currWorkspace.getObservables());
 			observables.addAll(slogoViewFrontEnd.getObservables());
-			
 			List<Observer> observers = new ArrayList<Observer>();
 			observers.addAll(observerFactory.getObservers());
 			observers.add(parser);
-			/* 6 */ HandleObservation.handleObservers(observables, observers);
-
+			HandleObservation.handleObservers(observables, observers);
 			currWorkspace.startWorkspace();
 		} catch (Exception e) {
 			e.printStackTrace();
 			slogoViewFrontEnd.showError(e);
 		}
-
-		// manipulateController.setHeading(0);
-		// manipulateController.foward(50);
 		launch(args);
 	}
 }

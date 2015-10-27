@@ -1,18 +1,16 @@
 package backend.node.display;
 
-import backend.node.types.FourArgumentNode;
+import backend.node.Node;
 import responses.Response;
 import responses.Success;
 import sharedobjects.DisplayProperties;
 import sharedobjects.IDisplayPropertiesLambda;
 import sharedobjects.ManipulateController;
-import sharedobjects.Workspace;
 
 /**
  * @author loganrooper
- *
  */
-public class SETPALETTE extends FourArgumentNode {
+public class SETPALETTE extends Node {
 	@Override
 	public Response run(ManipulateController mc) {
 		// Get index

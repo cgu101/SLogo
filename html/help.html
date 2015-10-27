@@ -2,24 +2,54 @@
 <html>
 <head>
 <style>
-table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
+table {
+  font-family: 'Arial';
+  margin: 25px auto;
+  border-collapse: collapse;
+  border: 1px solid #eee;
+  border-bottom: 2px solid #00cccc;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1), 0px 10px 20px rgba(0, 0, 0, 0.05), 0px 20px 20px rgba(0, 0, 0, 0.05), 0px 30px 20px rgba(0, 0, 0, 0.05);
 }
-th, td {
-    padding: 5px;
+table tr:hover {
+  background: #f4f4f4;
+}
+table tr:hover td {
+  color: #555;
+}
+table th, table td {
+  color: #999;
+  border: 1px solid #eee;
+  padding: 12px 35px;
+  border-collapse: collapse;
+}
+table th {
+  background: #00cccc;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+table th.last {
+  border-right: none;
+}
+body {
+  text-align: center;
+  font-family: 'Arial';
+  
+}
+
+.notimp {
+   opacity: 0.25;
 }
 </style>
 </head>
-<body>
+<bodybg color = "YELLOW">
 
-<h2>SLogo Documentation</h2>
+<h1>SLogo IDE Documentation</h1>
 
-<p>not case sensitive</p>
-
+<p><i>Values are not case sensitive.<i></p>
 
 <!-- Write your comments here -->
-<h2>Basic Syntax</h2>
+<center><h2>Basic Syntax</h2>
 <table>
 <tr>
     <th>Token</th>
@@ -51,7 +81,7 @@ th, td {
     <td>Comment</td>
     <td>Ignore any lines that are empty, i.e., only zero or more spaces, and lines that begin with the comment character, "#".</td>
 </tr>
-</table>
+</table> 
 
 
 <!-- Write your comments here -->
@@ -383,8 +413,8 @@ th, td {
   <td>sets size of the pen to be <em>pixels</em> thickness<br>
     returns given <em>pixels</em></td>
   </tr>
-<tr>
-  <td><code>SETSHAPE</code> <em>index</em><br>
+<tr class='notimp'>
+  <td><code>SETSHAPE <i>(not implemented)</i></code> <em>index</em><br>
       <code>SETSH</code> <em>index</em>
   </td>
   <td>sets shape of turtle to that represented by <em>index</em><br>
@@ -406,13 +436,13 @@ th, td {
     <code>SH</code><em></em></td>
   <td>returns   turtle's current shape index</td>
   </tr>
-<tr>
-  <td><code>STAMP</code></td>
+<tr class='notimp'>
+  <td><code>STAMP <i>(not implemented)</i></code></td>
   <td>draw the image of the turtle in its current settings on the workspace display<br>
     returns the  index of the turtle's image used for the stamp</td>
 </tr>
-<tr>
-  <td><code>CLEARSTAMPS</code></td>
+<tr class='notimp'>
+  <td><code>CLEARSTAMPS <i>(not implemented)</i></code></td>
   <td>remove all stamps that have been made<br>
     returns 1 if there were any stamps  cleared, 0 otherwise</td>
 </tr>
@@ -451,9 +481,9 @@ th, td {
     note, after commands are run,  currently active list of turtles returns to that set by the last TELL command (or default active turtle if TELL never given)<br>
     note, if more than one turtle is active, commands run return value associated with the last active turtle </td>
 </tr>
-<tr>
-  <td><code>ASKWITH</code> <code>[</code> <em>condition</em> <code>]<br>
-  </code> <code>[</code><em>&nbsp;&nbsp;command(s)</em> <code>]</code></td>
+<tr class='notimp'>
+  <td><code>ASKWITH</code> <code>[</code> <em>condition</em> <code>] <br>
+  </code> <code>[</code><em>&nbsp;&nbsp;command(s)</em> <code>]</code> <i>(not implemented)</i></td>
   <td>tell <i>turtles</i> matching  given <em>condition</em> to run <em>commands</em> given in the second list<em><br>
     </em>returns result of last command run<br>
     note, after commands are run,  currently active list of turtles returns to that set by the last TELL command (or default active turtle if TELL never given)<br>
@@ -461,6 +491,21 @@ th, td {
   </tr>
 </table>
 
+<h2><i>Secret Commands</i></h2>
+<table>
+<tr>
+  <th>Command</th>
+  <th>Description</th>
+</tr>
+<tr>
+  <td>cocobongo</td>
+  <td>???</td>
+</tr>
+</table>
 
+
+<p> Compiled by Slogo Team-17, Fall 2015 </p>
+<br />
+<br />
 </body>
 </html>

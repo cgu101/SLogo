@@ -1,15 +1,14 @@
 package backend.node.operations;
 
-import backend.node.types.OneArgumentNode;
+import backend.node.Node;
 import responses.Response;
 import responses.Success;
 import sharedobjects.ManipulateController;
 
 /**
  * @author loganrooper
- *
  */
-public class LESSP extends OneArgumentNode{
+public class LESSP extends Node{
 
 	@Override
 	public Response run(ManipulateController mc) {	

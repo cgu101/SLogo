@@ -43,8 +43,6 @@ import sharedobjects.UserInput;
 public class SlogoView {
 
 	private static final Dimension DEFAULT_SIZE = new Dimension(1200, 730);
-	// private static final String DEFAULT_RESOURCE_PACKAGE =
-	// "resources.languages/";
 	private static final String DEFAULT_RESOURCE_VIEW = "GUI.view";
 	protected static ResourceBundle myResource;
 	private static final String DEFAULT_LANGUAGE = "English";
@@ -57,8 +55,6 @@ public class SlogoView {
 	private CommandHistoryBox historyDisplayBox;
 	private FunctionListBox functionDisplayBox;
 
-	// private Image myTurtleImage;
-	// private List<Double> myTurtleIDs;
 	private CanvasObserver myTurtleCanvas;
 	private TurtleGroupObserver myTurtleGroup;
 	private BackgroundRectangleObserver myBackgroundRectangle;
@@ -74,7 +70,6 @@ public class SlogoView {
 
 		myTurtleCanvas = canvas;
 		myTurtleGroup = turtleGroup;
-		// myTurtleGroup = new TurtleGroupObserver(myTurtleImage, myTurtleIDs);
 
 		myResource = ResourceBundle.getBundle(DEFAULT_RESOURCE_VIEW);
 		commandBox = new CommandPromptDisplayBox();
@@ -83,16 +78,12 @@ public class SlogoView {
 		historyDisplayBox = new CommandHistoryBox(commandBox);
 		functionDisplayBox = new FunctionListBox(commandBox);
 		turtleStateBox = new TurtleStateBox();
-		// myTurtleImage = new
-		// Image(getClass().getClassLoader().getResourceAsStream(myResource.getString("defaultTurtle")));
-		// myTurtleIDs = new ArrayList<Double>();
 		myUserInputObservable = new UserInput(DEFAULT_LANGUAGE);
-
-		ButtonFactory buttonFactory = new ButtonFactory(commandBox, messageBox, historyDisplayBox, myTurtleGroup,
-				myUserInputObservable);
-		myButtons = buttonFactory.getButtons();
-
 		BorderPane root = new BorderPane();
+		ButtonFactory buttonFactory = new ButtonFactory(commandBox, messageBox, historyDisplayBox, myTurtleGroup,
+				myUserInputObservable, root);
+
+		myButtons = buttonFactory.getButtons();
 
 		root.setMaxSize(DEFAULT_SIZE.getWidth(), DEFAULT_SIZE.getHeight());
 
@@ -101,8 +92,6 @@ public class SlogoView {
 		root.setBottom(bottomBox());
 		root.setRight(rightBox());
 
-		// myObservers.get(0).update(null, (Object)createDTO());
-		// myObservers.get(0).update(null, (Object)createDTO2());
 		scene = new Scene(root, DEFAULT_SIZE.width, DEFAULT_SIZE.height);
 	}
 
@@ -186,14 +175,11 @@ public class SlogoView {
 	private Node centerBox() {
 		TabPane tabPane = new TabPane();
 		AnchorPane mainBox = new AnchorPane();
-		// TabPane mainBox = new TabPane();
 		Tab tab = new Tab();
 		myBackgroundRectangle = new BackgroundRectangleObserver(Integer.parseInt(myResource.getString("canvasWidth")),
 				Integer.parseInt(myResource.getString("canvasHeight")));
-		// myTurtleCanvas = new
-		// CanvasObserver(Integer.parseInt(myResource.getString("canvasWidth")),
-		// Integer.parseInt(myResource.getString("canvasHeight")));
 		mainBox.getChildren().addAll(myBackgroundRectangle, myTurtleCanvas, myTurtleGroup);
+
 		tab.setContent(mainBox);
 		tab.setClosable(false);
 		tab.setText("New Workspace");
@@ -216,7 +202,8 @@ public class SlogoView {
 	private HBox lineThicknessSlider() {
 		HBox thicknessSlider = new HBox();
 		lineSlider = new LineSlider();
-		lineSlider.setValue(4);
+		lineSlider.setValue(getTurtlePaneCanvas().getPenWidth());
+
 		Label lineCaption = new Label(" Pen thickness: ");
 		lineCaption.setTextFill(Color.BLUE);
 		lineSlider.valueProperty().addListener(new ChangeListener<Number>() {
@@ -255,14 +242,12 @@ public class SlogoView {
 
 	public List<Observable> getObservables() {
 		@SuppressWarnings("serial")
-        List<Observable> a = new ArrayList<Observable>() {
+		List<Observable> a = new ArrayList<Observable>() {
 			{
 				add(myUserInputObservable);
 			}
 		};
-
 		return a;
-
 	}
 
 	public TurtleGroupObserver getTurtlePaneGroup() {

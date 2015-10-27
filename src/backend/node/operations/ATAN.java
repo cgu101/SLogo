@@ -1,15 +1,14 @@
 package backend.node.operations;
 
-import backend.node.types.OneArgumentNode;
+import backend.node.Node;
 import responses.Response;
 import responses.Success;
 import sharedobjects.ManipulateController;
 
 /**
  * @author loganrooper
- *
  */
-public class ATAN extends OneArgumentNode{
+public class ATAN extends Node{
 
 	@Override
 	public Response run(ManipulateController mc) {

@@ -1,15 +1,14 @@
 package backend.node.commands;
 
-import backend.node.types.TwoArgumentNode;
+import backend.node.Node;
+import exceptions.WontImplementException;
 import responses.Response;
 import sharedobjects.ManipulateController;
 
-public class ASKWITH extends TwoArgumentNode  {
+public class ASKWITH extends Node  {
 
 	@Override
 	public Response run(ManipulateController mc) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new WontImplementException("ASKWITH");
 	}
-
 }

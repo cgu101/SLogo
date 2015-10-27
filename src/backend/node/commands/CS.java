@@ -1,13 +1,8 @@
-/**
- * 
- */
 package backend.node.commands;
-import backend.node.types.ZeroArgumentNode;
+import backend.node.Node;
 import responses.Response;
 import responses.Success;
 import sharedobjects.DisplayProperties;
-import sharedobjects.IDisplayPropertiesLambda;
-import sharedobjects.ITurtleLambda;
 import sharedobjects.ManipulateController;
 import sharedobjects.Turtle;
 
@@ -15,16 +10,16 @@ import sharedobjects.Turtle;
  * @author loganrooper
  *
  */
-public class CS extends ZeroArgumentNode {
+public class CS extends Node {
 
 	@Override
 	public Response run(ManipulateController sharedHandle) {
-		sharedHandle.executeOnAllActiveTurtles((Turtle t) -> {
+		sharedHandle.executeOnAllTurtles((Turtle t) -> {
 			t.setPosition(new double[]{0,0});
 			t.setHeading(90);
 			return 0;
 		});
-		
+			
 		sharedHandle.executeDisplayProperties((DisplayProperties t) -> {
 			t.clear();
 			t.notifyObservers("turtle");
@@ -32,6 +27,5 @@ public class CS extends ZeroArgumentNode {
 		});
 		
 		return new Success(0);
-		//return distance traveled
 	}
 }

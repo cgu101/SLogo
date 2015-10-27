@@ -1,17 +1,16 @@
 package backend.node.display;
 
-import backend.node.types.ZeroArgumentNode;
-import exceptions.NotImplementedException;
+import backend.node.Node;
+import exceptions.WontImplementException;
 import responses.Response;
 import sharedobjects.ManipulateController;
 
 /**
  * @author loganrooper
- *
  */
-public class STAMP extends ZeroArgumentNode {
+public class STAMP extends Node {
 	@Override
 	public Response run(ManipulateController mc) {
-		throw new NotImplementedException();
+		throw new WontImplementException("STAMP");
 	}
 }

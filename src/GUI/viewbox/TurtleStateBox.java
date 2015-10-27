@@ -16,7 +16,7 @@ public class TurtleStateBox extends TitledPane {
 
 
     private ListView<String> listView;
-    private final String stringFormat = "Turtle ID: %s\n" + "x=%s, y=%s\n" + "visible=%s";
+    private final String stringFormat = "Turtle ID: %s\n" + "x=%s, y=%s\n" + "Visible=%s";
 
     public TurtleStateBox (){
         this.setText("Turtle State List");

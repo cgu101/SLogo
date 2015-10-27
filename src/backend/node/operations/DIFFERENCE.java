@@ -1,15 +1,14 @@
 package backend.node.operations;
 
-import backend.node.types.TwoArgumentNode;
+import backend.node.Node;
 import responses.Response;
 import responses.Success;
 import sharedobjects.ManipulateController;
 
 /**
  * @author loganrooper
- *
  */
-public class DIFFERENCE extends TwoArgumentNode{
+public class DIFFERENCE extends Node{
 
 	@Override
 	public Response run(ManipulateController mc) {	

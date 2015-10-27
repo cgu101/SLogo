@@ -1,21 +1,17 @@
-/**
- * 
- */
 package backend.node.commands;
 
-import backend.node.types.ZeroArgumentNode;
+import backend.node.Node;
 import responses.Response;
+import responses.Success;
 import sharedobjects.ManipulateController;
 
 /**
  * @author loganrooper
- *
  */
-public class TURTLES extends ZeroArgumentNode {
+
+public class TURTLES extends Node {
 	@Override
 	public Response run(ManipulateController mc) {
-		// Call mc.getNumberTurtles
-		
-		return null;
+		return new Success(mc.getActiveTurtleIDS().size());
 	}
 }

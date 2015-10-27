@@ -9,7 +9,6 @@ import sharedobjects.Turtle;
 
 /**
  * @author loganrooper
- *
  */
 public class YCOR extends Command{
 
@@ -23,5 +22,4 @@ public class YCOR extends Command{
 		double result = mc.executeOnAllActiveTurtles(l);		
 		return new Success(result);
 	}
-
 }

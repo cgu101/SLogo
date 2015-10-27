@@ -1,9 +1,6 @@
-/**
- * 
- */
 package backend.node.commands;
 
-import backend.node.types.ZeroArgumentNode;
+import backend.node.Node;
 import responses.Response;
 import responses.Success;
 import sharedobjects.ITurtleLambda;
@@ -12,13 +9,11 @@ import sharedobjects.Turtle;
 
 /**
  * @author loganrooper
- *
  */
-public class HT extends ZeroArgumentNode {
+public class HT extends Node {
 
 	@Override
 	public Response run(ManipulateController mc) {
-		
 		ITurtleLambda l = (Turtle t) -> {
 			t.hide();
 			return 0;

@@ -1,6 +1,5 @@
 package backend.node.control;
 
-
 import backend.node.Node;
 import backend.node.types.ControlStructure;
 import responses.Response;

@@ -1,6 +1,6 @@
 package backend.node.display;
 
-import backend.node.types.OneArgumentNode;
+import backend.node.Node;
 import responses.Response;
 import responses.Success;
 import sharedobjects.DisplayProperties;
@@ -9,9 +9,8 @@ import sharedobjects.ManipulateController;
 
 /**
  * @author loganrooper
- *
  */
-public class SETPC extends OneArgumentNode {
+public class SETPC extends Node {
 	@Override
 	public Response run(ManipulateController mc) {
 		// Get index

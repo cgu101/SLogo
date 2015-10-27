@@ -4,7 +4,6 @@ import backend.node.types.Constant;
 import backend.node.types.ControlStructure;
 import responses.Response;
 import responses.Success;
-import sharedobjects.IWorkspaceVariablesLambda;
 import sharedobjects.ManipulateController;
 import sharedobjects.Variables;
 

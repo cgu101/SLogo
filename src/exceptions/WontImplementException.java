@@ -13,4 +13,7 @@ public class WontImplementException extends RuntimeException {
     public WontImplementException(){
     	super("We chose not to implement this.");
     }
+    public WontImplementException(String claass){
+    	super("We chose not to implment: " + claass);
+    }
 }

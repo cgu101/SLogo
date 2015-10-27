@@ -1,7 +1,6 @@
 package backend.node.display;
 
-import backend.node.types.OneArgumentNode;
-import exceptions.WontImplementException;
+import backend.node.Node;
 import responses.Response;
 import responses.Success;
 import sharedobjects.DisplayProperties;
@@ -10,9 +9,8 @@ import sharedobjects.ManipulateController;
 
 /**
  * @author loganrooper
- *
  */
-public class SETSH extends OneArgumentNode {
+public class SETSH extends Node {
 	@Override
 	public Response run(ManipulateController mc) {
 		int index = getAndRun(0, mc).getIntegerValue();

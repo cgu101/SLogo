@@ -1,6 +1,6 @@
 package backend.node.commands;
 
-import backend.node.types.OneArgumentNode;
+import backend.node.Node;
 import responses.Response;
 import responses.Success;
 import sharedobjects.ITurtleLambda;
@@ -9,9 +9,8 @@ import sharedobjects.Turtle;
 
 /**
  * @author loganrooper
- *
  */
-public class SETH extends OneArgumentNode {
+public class SETH extends Node {
 
 	@Override
 	public Response run(ManipulateController mc) {

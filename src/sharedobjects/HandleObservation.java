@@ -18,9 +18,8 @@ public class HandleObservation {
         private static final long serialVersionUID = 1L;
 
         {
-			put("TurtleContainer", new LinkedList<String>(
-					Arrays.asList("TurtleGroupObserver", "CanvasObserver", "TurtleStateBoxObserver")));
-			put("Success", new LinkedList<String>(Arrays.asList("MessageDisplayBox")));
+			put("TurtleContainer", new LinkedList<String>(Arrays.asList("TurtleGroupObserver", "CanvasObserver", "TurtleStateBoxObserver")));
+			put("Success", new LinkedList<String>(Arrays.asList("MessageDisplayBoxObserver")));
 			put("UserInput", new LinkedList<String>(Arrays.asList("Parser")));
 			put("Variables", new LinkedList<String>(Arrays.asList("FunctionVariableObserver")));
 			put("Functions", new LinkedList<String>(Arrays.asList("FunctionVariableObserver")));
@@ -43,8 +42,8 @@ public class HandleObservation {
 		}
     }
 
+	//Perform Observer/Observable Linking
     private static void linkObserverableObserver(Observable observableO, Observer observerO) {
-        //Perform Observer/Observable Linking
         observableO.addObserver(observerO);
         System.out.println(observerO.getClass().getSimpleName() + " : " + observableO.getClass().getSimpleName());
         System.out.println("got to link");

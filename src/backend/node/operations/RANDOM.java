@@ -2,7 +2,7 @@ package backend.node.operations;
 
 import java.util.Random;
 
-import backend.node.types.TwoArgumentNode;
+import backend.node.Node;
 import responses.Response;
 import responses.Success;
 import sharedobjects.ManipulateController;
@@ -11,7 +11,7 @@ import sharedobjects.ManipulateController;
  * @author loganrooper
  *
  */
-public class RANDOM extends TwoArgumentNode{
+public class RANDOM extends Node{
 
 	@Override
 	public Response run(ManipulateController mc) {

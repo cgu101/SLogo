@@ -1,10 +1,11 @@
 package backend.node.types;
 
+import backend.node.Node;
 import responses.Response;
 import responses.Success;
 import sharedobjects.ManipulateController;
 
-public class Constant extends ZeroArgumentNode {
+public class Constant extends Node {
 	public Constant() {
 		super();
 	}

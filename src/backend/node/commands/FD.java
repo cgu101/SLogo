@@ -1,13 +1,13 @@
 package backend.node.commands;
 
-import backend.node.types.OneArgumentNode;
+import backend.node.Node;
 import responses.Response;
 import responses.Success;
 import sharedobjects.ITurtleLambda;
 import sharedobjects.ManipulateController;
 import sharedobjects.Turtle;
 
-public class FD extends OneArgumentNode {
+public class FD extends Node {
 
 	@Override
 	public Response run(ManipulateController mc) {

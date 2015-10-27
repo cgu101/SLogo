@@ -9,7 +9,6 @@ import sharedobjects.Turtle;
 
 /**
  * @author loganrooper
- *
  */
 public class XCOR extends Command{
 	@Override

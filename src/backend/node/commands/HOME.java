@@ -9,7 +9,6 @@ import sharedobjects.Turtle;
 
 /**
  * @author loganrooper
- *
  */
 public class HOME extends Command {
 

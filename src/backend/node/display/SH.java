@@ -1,6 +1,6 @@
 package backend.node.display;
 
-import backend.node.types.ZeroArgumentNode;
+import backend.node.Node;
 import responses.Response;
 import responses.Success;
 import sharedobjects.DisplayProperties;
@@ -9,13 +9,12 @@ import sharedobjects.ManipulateController;
 
 /**
  * @author loganrooper
- *
  */
-public class SH extends ZeroArgumentNode {
+public class SH extends Node {
 	@Override
 	public Response run(ManipulateController mc) {
 		IDisplayPropertiesLambda l = (DisplayProperties p) -> {
-			return p.getShape();
+			return p.getPenShape();
 		};
 
 		double result = mc.executeDisplayProperties(l);

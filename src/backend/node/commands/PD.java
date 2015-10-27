@@ -1,9 +1,6 @@
-/**
- * 
- */
 package backend.node.commands;
 
-import backend.node.types.ZeroArgumentNode;
+import backend.node.Node;
 import responses.Response;
 import responses.Success;
 import sharedobjects.DisplayProperties;
@@ -11,9 +8,8 @@ import sharedobjects.ManipulateController;
 
 /**
  * @author loganrooper
- *
  */
-public class PD extends ZeroArgumentNode {
+public class PD extends Node {
 
 	@Override
 	public Response run(ManipulateController mc) {

@@ -1,6 +1,6 @@
 package backend.node.operations;
 
-import backend.node.types.TwoArgumentNode;
+import backend.node.Node;
 import responses.Response;
 import responses.Success;
 import sharedobjects.ManipulateController;
@@ -9,7 +9,7 @@ import sharedobjects.ManipulateController;
  * @author loganrooper
  *
  */
-public class AND extends TwoArgumentNode{
+public class AND extends Node{
 
 	@Override
 	public Response run(ManipulateController mc) {
