@@ -1,3 +1,6 @@
+// This entire file is part of my masterpiece.
+// Abhishek Upadhyaya Ghimire
+
 package GUI;
 
 import java.awt.Dimension;
@@ -7,30 +10,20 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
-import GUI.button.AButton;
-import GUI.button.ButtonFactory;
-import GUI.dropdown.BackgroundColorDropdown;
-import GUI.dropdown.FileDropdown;
-import GUI.dropdown.LanguageListDropdown;
-import GUI.dropdown.LineTypeDropdown;
-import GUI.dropdown.PenColorDropdown;
-import GUI.slider.LineSlider;
-import GUI.slider.OpacitySlider;
-import GUI.textBox.CommandPromptDisplayBox;
-import GUI.textBox.MessageDisplayBoxObserver;
-import GUI.turtlepane.BackgroundRectangleObserver;
-import GUI.turtlepane.CanvasObserver;
-import GUI.turtlepane.TurtleGroupObserver;
-import GUI.viewbox.CommandHistoryBox;
-import GUI.viewbox.FunctionListBox;
-import GUI.viewbox.TurtleStateBox;
-import GUI.viewbox.VariableListBox;
+
+import GUI.button.*;
+import GUI.dropdown.*;
+import GUI.slider.*;
+import GUI.textBox.*;
+import GUI.turtlepane.*;
+import GUI.viewbox.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
@@ -63,11 +56,11 @@ public class SlogoView {
 	private OpacitySlider opacitySlider;
 
 	private UserInput myUserInputObservable;
-
 	private Map<String, AButton> myButtons;
+	private Label space;
 
 	public SlogoView(CanvasObserver canvas, TurtleGroupObserver turtleGroup) {
-
+		space = new Label(" ");
 		myTurtleCanvas = canvas;
 		myTurtleGroup = turtleGroup;
 
@@ -80,13 +73,10 @@ public class SlogoView {
 		turtleStateBox = new TurtleStateBox();
 		myUserInputObservable = new UserInput(DEFAULT_LANGUAGE);
 		BorderPane root = new BorderPane();
-		ButtonFactory buttonFactory = new ButtonFactory(commandBox, messageBox, historyDisplayBox, myTurtleGroup,
-				myUserInputObservable, root);
-
+		ButtonFactory buttonFactory = new ButtonFactory(commandBox, messageBox, historyDisplayBox, myTurtleGroup, myUserInputObservable, root);
 		myButtons = buttonFactory.getButtons();
 
 		root.setMaxSize(DEFAULT_SIZE.getWidth(), DEFAULT_SIZE.getHeight());
-
 		root.setTop(menu());
 		root.setCenter(centerBox());
 		root.setBottom(bottomBox());
@@ -95,39 +85,21 @@ public class SlogoView {
 		scene = new Scene(root, DEFAULT_SIZE.width, DEFAULT_SIZE.height);
 	}
 
+	public Scene getScene() {
+		return scene;
+	}
+
 	private Node menu() {
 		HBox result = new HBox();
-		result.getChildren().addAll(createFileDropDown(), myButtons.get("UploadButton"), createLanguageDropDown(),
+		result.getChildren().addAll(myButtons.get("UploadButton"), createLanguageDropDown(),
 				bgColorDropDown(), penColorDropDown(), lineTypeDropDown(), myButtons.get("HelpButton"));
-
 		return result;
 	}
 
 	private Node bottomBox() {
 		VBox result = new VBox();
-		result.getChildren().add(messageAndClearBoxes());
-		result.getChildren().add(commandAndEnterBoxes());
-
+		result.getChildren().addAll(messageAndClearBoxes(), commandAndEnterBoxes());
 		return result;
-	}
-
-	public Scene getScene() {
-		return scene;
-	}
-
-	private Node createFileDropDown() {
-		ComboBox<String> fileDropDown = new FileDropdown();
-		fileDropDown.setOnAction(event -> {
-			String text = fileDropDown.getValue();
-			if (text.equalsIgnoreCase("New Workspace")) {
-				// centerBox();
-			} else if (text.equalsIgnoreCase("Save Workspace")) {
-				// centerBox();
-			}
-			messageBox.setMessage(text + " executed");
-
-		});
-		return fileDropDown;
 	}
 
 	private Node lineTypeDropDown() {
@@ -135,7 +107,7 @@ public class SlogoView {
 		lineType.setOnAction(event -> {
 			String line = lineType.getValue();
 			myTurtleCanvas.setLineType(line);
-			messageBox.setMessage("Line type set to " + line);
+			messageBox.setMessage(myResource.getString("lineTypeMessage")+ line);
 		});
 		return lineType;
 	}
@@ -145,7 +117,7 @@ public class SlogoView {
 		languageDropDown.setOnAction(event -> {
 			String lang = languageDropDown.getValue();
 			myUserInputObservable.setCurrentLanguage(lang);
-			messageBox.setMessage("Language Set to " + lang);
+			messageBox.setMessage(myResource.getString("languageTypeMessage")+ lang);
 		});
 		return languageDropDown;
 	}
@@ -156,7 +128,7 @@ public class SlogoView {
 			String bgColorString = bgColor.getValue();
 			String color = bgColorString.substring(3);
 			myBackgroundRectangle.setBackgroundColor(color);
-			messageBox.setMessage("Background Color Set to " + color);
+			messageBox.setMessage(myResource.getString("backgroundColorMessage") + color);
 		});
 		return bgColor;
 	}
@@ -167,7 +139,7 @@ public class SlogoView {
 			String penColorString = penColor.getValue();
 			String color = penColorString.substring(3);
 			myTurtleCanvas.setPenColor(color);
-			messageBox.setMessage("Pen Color Set to " + color);
+			messageBox.setMessage(myResource.getString("penColorMessage") + color);
 		});
 		return penColor;
 	}
@@ -188,50 +160,41 @@ public class SlogoView {
 	}
 
 	private Node messageAndClearBoxes() {
-		HBox result = new HBox();
-		result.getChildren().addAll(messageBox, myButtons.get("ClearCommandButton"), imageOpacitySlider());
-		return result;
+		return horizontalNodes(messageBox, myButtons.get("ClearCommandButton"), imageOpacitySlider());
 	}
 
 	private Node commandAndEnterBoxes() {
+		return horizontalNodes(commandBox, myButtons.get("EnterCommandButton"), lineThicknessSlider());	
+	}
+
+	private HBox horizontalNodes(Node nodeA, Node nodeB, Node nodeC){
 		HBox result = new HBox();
-		result.getChildren().addAll(commandBox, myButtons.get("EnterCommandButton"), lineThicknessSlider());
+		result.getChildren().addAll(nodeA,nodeB,nodeC);
 		return result;
 	}
 
-	private HBox lineThicknessSlider() {
-		HBox thicknessSlider = new HBox();
+	private Node lineThicknessSlider() {
 		lineSlider = new LineSlider();
-		lineSlider.setValue(getTurtlePaneCanvas().getPenWidth());
-
-		Label lineCaption = new Label(" Pen thickness: ");
-		lineCaption.setTextFill(Color.BLUE);
-		lineSlider.valueProperty().addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				lineCaption.setText(" Pen thickness: " + String.format("%.0f  ", newValue));
-				myTurtleCanvas.setPenWidth(newValue.doubleValue());
-			}
-		});
-		thicknessSlider.getChildren().addAll(lineSlider, lineCaption);
-		return thicknessSlider;
+		return horizontalNodes(lineSlider, space, sliderProperty(myResource.getString("lineSliderCaption"), lineSlider));
 	}
 
-	private HBox imageOpacitySlider() {
-		HBox imageSlider = new HBox();
+	private Node imageOpacitySlider() {
 		opacitySlider = new OpacitySlider();
-		Label opacityCaption = new Label(" Turtle opacity: ");
-		opacityCaption.setTextFill(Color.RED);
-		opacitySlider.valueProperty().addListener(new ChangeListener<Number>() {
+		return horizontalNodes(opacitySlider, space, sliderProperty(myResource.getString("opacitySliderCaption"), opacitySlider));
+	}
+
+	private Label sliderProperty(String label, Slider slider) {
+		Label caption = new Label(label);
+		caption.setTextFill(Color.BLUE);
+		slider.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				opacityCaption.setText(" Turtle opacity: " + String.format("%.2f  ", newValue));
+				caption.setText(label + String.format("%.1f  ", newValue));
+				myTurtleCanvas.setPenWidth(newValue.doubleValue());
 				myTurtleGroup.changeOpacity(newValue.doubleValue());
 			}
 		});
-		imageSlider.getChildren().addAll(opacitySlider, opacityCaption);
-		return imageSlider;
-
+		return caption;		
 	}
 
 	private VBox rightBox() {
@@ -242,12 +205,12 @@ public class SlogoView {
 
 	public List<Observable> getObservables() {
 		@SuppressWarnings("serial")
-		List<Observable> a = new ArrayList<Observable>() {
+		List<Observable> array = new ArrayList<Observable>() {
 			{
 				add(myUserInputObservable);
 			}
 		};
-		return a;
+		return array;
 	}
 
 	public TurtleGroupObserver getTurtlePaneGroup() {
