@@ -1,3 +1,7 @@
+// This entire file is part of my masterpiece.
+// WANNING JIANG
+
+
 package backend.parser;
 
 import java.io.BufferedReader;
@@ -19,6 +23,7 @@ import backend.factory.CommandFactory;
 import backend.node.Node;
 import backend.node.types.Constant;
 import datatransferobjects.UserInputTransferObject;
+import exceptions.LexiconException;
 import exceptions.SyntaxException;
 import responses.Error;
 import responses.Response;
@@ -38,7 +43,8 @@ public class Parser implements Observer {
 	private List<Entry<SyntaxType, String>> mySyntaxList;
 	private boolean myListLegal;
 	private static final String PARSER_ERROR_RESOURCE = "backend.parser.parserError";
-	protected static ResourceBundle myResource;
+	protected static ResourceBundle myErrorMsg;
+	
 
 	private static final HashMap<String, TokenType> tokenMap = new HashMap<String, TokenType>() {
 		/**
@@ -84,7 +90,7 @@ public class Parser implements Observer {
 		// Call run to start.
 		myManiControl = mc;
 		init();
-		myResource = ResourceBundle.getBundle(PARSER_ERROR_RESOURCE);
+		myErrorMsg = ResourceBundle.getBundle(PARSER_ERROR_RESOURCE);
 	}
 
 	public void init() {
@@ -157,7 +163,7 @@ public class Parser implements Observer {
 			if (commentFlag)
 				break;
 			if (!matchFlag)
-				throw new LexiconException(myResource.getString("error_illegaToken"));
+				throw new LexiconException(myErrorMsg.getString("error_illegaToken"));
 		}
 		return result;
 	}
@@ -194,7 +200,7 @@ public class Parser implements Observer {
 				}
 				break;
 			default:
-				throw new SyntaxException(myResource.getString("error_parser"));
+				throw new SyntaxException(myErrorMsg.getString("error_parser"));
 			}
 
 		}
@@ -282,7 +288,7 @@ public class Parser implements Observer {
 			case OR:
 				parseExpression(root, 2);
 				break;
-			// with 3 arguments
+			// with 4 arguments
 			case SETPALETTE:
 				parseExpression(root, 4);
 				break;
@@ -291,7 +297,7 @@ public class Parser implements Observer {
 				root = factory.createNode(mySyntaxList.get(myIndex).getKey());
 				root.setName(mySyntaxList.get(myIndex).getValue());
 				myIndex++;
-				parseControlStruc(root, myResource.getString("error_right2"), (Node r) -> {
+				parseControlStruc(root, myErrorMsg.getString("error_right2"), (Node r) -> {
 					SyntaxType rType = mySyntaxList.get(myIndex - 1).getKey();
 					switch (rType) {
 					case SUM:
@@ -319,10 +325,10 @@ public class Parser implements Observer {
 				});
 				break;
 			case GROUPEND:
-				throw new SyntaxException(myResource.getString("error_left2") + root.getName());
+				throw new SyntaxException(myErrorMsg.getString("error_left2") + root.getName());
 			case LISTSTART:
 				if (myListLegal) {
-					parseControlStruc(root, myResource.getString("error_right1"), (Node r) -> {
+					parseControlStruc(root, myErrorMsg.getString("error_right1"), (Node r) -> {
 						while (mySyntaxList.get(myIndex).getKey() != SyntaxType.LISTEND) {
 							Node c = growTree();
 							r.addChild(c);
@@ -331,15 +337,15 @@ public class Parser implements Observer {
 					});
 					myListLegal = false;
 				} else {
-					throw new SyntaxException(root.getName() + myResource.getString("error_illegalUsage"));
+					throw new SyntaxException(root.getName() + myErrorMsg.getString("error_illegalUsage"));
 				}
 				break;
 			case LISTEND:
-				throw new SyntaxException(myResource.getString("error_left1") + root.getName());
+				throw new SyntaxException(myErrorMsg.getString("error_left1") + root.getName());
 			case MAKEVARIABLE:
-				parseControlStruc(root, myResource.getString("error_miss"), (Node r) -> {
+				parseControlStruc(root, myErrorMsg.getString("error_miss"), (Node r) -> {
 					if (mySyntaxList.get(myIndex).getKey() != SyntaxType.VARIABLE) {
-						throw new SyntaxException(myResource.getString("error_var") + r.getName());
+						throw new SyntaxException(myErrorMsg.getString("error_var") + r.getName());
 					} else {
 						for (int i = 0; i < 2; i++) {
 							Node c = growTree();
@@ -349,11 +355,11 @@ public class Parser implements Observer {
 				});
 				break;
 			case REPEAT:
-				parseControlStruc(root, myResource.getString("error_miss"), (Node r) -> {
+				parseControlStruc(root, myErrorMsg.getString("error_miss"), (Node r) -> {
 					Node c = growTree();
 					r.addChild(c);
 					if (mySyntaxList.get(myIndex).getKey() != SyntaxType.LISTSTART) {
-						throw new SyntaxException(myResource.getString("error_left1") + r.getName());
+						throw new SyntaxException(myErrorMsg.getString("error_left1") + r.getName());
 					} else {
 						// clist must be a LISTSTART syntax type
 						myListLegal = true;
@@ -363,25 +369,25 @@ public class Parser implements Observer {
 				});
 				break;
 			case DOTIMES:
-				parseControlStruc(root, myResource.getString("error_right1"), (Node r) -> {
+				parseControlStruc(root, myErrorMsg.getString("error_right1"), (Node r) -> {
 					if (mySyntaxList.get(myIndex).getKey() != SyntaxType.LISTSTART) {
-						throw new SyntaxException(myResource.getString("error_left1") + r.getName());
+						throw new SyntaxException(myErrorMsg.getString("error_left1") + r.getName());
 					} else {
 						myIndex++;
 						if (mySyntaxList.get(myIndex).getKey() != SyntaxType.VARIABLE) {
-							throw new SyntaxException(myResource.getString("error_var") + r.getName());
+							throw new SyntaxException(myErrorMsg.getString("error_var") + r.getName());
 						}
 						Node c = growTree();
 						r.addChild(c);
 						c = growTree();
 						r.addChild(c);
 						if (mySyntaxList.get(myIndex).getKey() != SyntaxType.LISTEND) {
-							throw new SyntaxException(myResource.getString("error_right1") + r.getName());
+							throw new SyntaxException(myErrorMsg.getString("error_right1") + r.getName());
 						}
 						myIndex++;
 					}
 					if (mySyntaxList.get(myIndex).getKey() != SyntaxType.LISTSTART) {
-						throw new SyntaxException(myResource.getString("error_left1") + r.getName());
+						throw new SyntaxException(myErrorMsg.getString("error_left1") + r.getName());
 					} else {
 						myListLegal = true;
 						Node c = growTree();
@@ -390,13 +396,13 @@ public class Parser implements Observer {
 				});
 				break;
 			case FOR:
-				parseControlStruc(root, myResource.getString("error_miss"), (Node r) -> {
+				parseControlStruc(root, myErrorMsg.getString("error_miss"), (Node r) -> {
 					if (mySyntaxList.get(myIndex).getKey() != SyntaxType.LISTSTART) {
-						throw new SyntaxException(myResource.getString("error_left1") + r.getName());
+						throw new SyntaxException(myErrorMsg.getString("error_left1") + r.getName());
 					} else {
 						myIndex++;
 						if (mySyntaxList.get(myIndex).getKey() != SyntaxType.VARIABLE) {
-							throw new SyntaxException(myResource.getString("error_var") + r.getName());
+							throw new SyntaxException(myErrorMsg.getString("error_var") + r.getName());
 						}
 						Node c = null;
 						for (int i = 0; i < 4; i++) {
@@ -404,12 +410,12 @@ public class Parser implements Observer {
 							r.addChild(c);
 						}
 						if (mySyntaxList.get(myIndex).getKey() != SyntaxType.LISTEND) {
-							throw new SyntaxException(myResource.getString("error_right1") + r.getName());
+							throw new SyntaxException(myErrorMsg.getString("error_right1") + r.getName());
 						}
 						myIndex++;
 					}
 					if (mySyntaxList.get(myIndex).getKey() != SyntaxType.LISTSTART) {
-						throw new SyntaxException(myResource.getString("error_left1") + r.getName());
+						throw new SyntaxException(myErrorMsg.getString("error_left1") + r.getName());
 					} else {
 						myListLegal = true;
 						Node c = growTree();
@@ -418,11 +424,11 @@ public class Parser implements Observer {
 				});
 				break;
 			case IF:
-				parseControlStruc(root, myResource.getString("error_miss"), (Node r) -> {
+				parseControlStruc(root, myErrorMsg.getString("error_miss"), (Node r) -> {
 					Node c = growTree();
 					r.addChild(c);
 					if (mySyntaxList.get(myIndex).getKey() != SyntaxType.LISTSTART) {
-						throw new SyntaxException(myResource.getString("error_left1") + r.getName());
+						throw new SyntaxException(myErrorMsg.getString("error_left1") + r.getName());
 					} else {
 						myListLegal = true;
 						c = growTree();
@@ -431,12 +437,12 @@ public class Parser implements Observer {
 				});
 				break;
 			case IFELSE:
-				parseControlStruc(root, myResource.getString("error_miss"), (Node r) -> {
+				parseControlStruc(root, myErrorMsg.getString("error_miss"), (Node r) -> {
 					Node c = growTree();
 					r.addChild(c);
 					for (int i = 0; i < 2; i++) {
 						if (mySyntaxList.get(myIndex).getKey() != SyntaxType.LISTSTART) {
-							throw new SyntaxException(myResource.getString("error_left1") + r.getName());
+							throw new SyntaxException(myErrorMsg.getString("error_left1") + r.getName());
 						} else {
 							myListLegal = true;
 							c = growTree();
@@ -446,9 +452,9 @@ public class Parser implements Observer {
 				});
 				break;
 			case TELL:
-				parseControlStruc(root, myResource.getString("error_miss"), (Node r) -> {
+				parseControlStruc(root, myErrorMsg.getString("error_miss"), (Node r) -> {
 					if (mySyntaxList.get(myIndex).getKey() != SyntaxType.LISTSTART) {
-						throw new SyntaxException(myResource.getString("error_left1") + r.getName());
+						throw new SyntaxException(myErrorMsg.getString("error_left1") + r.getName());
 					} else {
 						myListLegal = true;
 						Node c = growTree();
@@ -458,10 +464,10 @@ public class Parser implements Observer {
 				break;
 			case ASK:
 			case ASKWITH:
-				parseControlStruc(root, myResource.getString("error_miss"), (Node r) -> {
+				parseControlStruc(root, myErrorMsg.getString("error_miss"), (Node r) -> {
 					for (int i = 0; i < 2; i++) {
 						if (mySyntaxList.get(myIndex).getKey() != SyntaxType.LISTSTART) {
-							throw new SyntaxException(myResource.getString("error_left1") + r.getName());
+							throw new SyntaxException(myErrorMsg.getString("error_left1") + r.getName());
 						} else {
 							myListLegal = true;
 							Node c = growTree();
@@ -480,20 +486,20 @@ public class Parser implements Observer {
 
 				if (toCmd == null)
 					throw new SyntaxException(
-							myResource.getString("error_undefined") + mySyntaxList.get(myIndex - 1).getValue());
+							myErrorMsg.getString("error_undefined") + mySyntaxList.get(myIndex - 1).getValue());
 				int numOfArg = toCmd.getChildrenNum() - 1;
 				parseExpression(root, numOfArg);
 			}
 			return root;
 		} catch (ArrayIndexOutOfBoundsException e) {
-			throw new SyntaxException(myResource.getString("error_miss"));
+			throw new SyntaxException(myErrorMsg.getString("error_miss"));
 		}
 	}
 
 	private void parseExpression(Node root, int numOfChildren) throws SyntaxException {
 		for (int i = 0; i < numOfChildren; i++) {
 			if (myIndex >= mySyntaxList.size())
-				throw new SyntaxException(myResource.getString("error_miss") + root.getName());
+				throw new SyntaxException(myErrorMsg.getString("error_miss") + root.getName());
 			Node c = growTree();
 			root.addChild(c);
 		}
@@ -512,12 +518,12 @@ public class Parser implements Observer {
 		String name = mySyntaxList.get(myIndex).getValue();
 		root.setName(name);
 		if (mySyntaxList.get(myIndex).getKey() != SyntaxType.USERCOMMAND) {
-			throw new SyntaxException(myResource.getString("error_dup") + root.getName());
+			throw new SyntaxException(myErrorMsg.getString("error_dup") + root.getName());
 		}
 		myIndex++;
 		try {
 			if (mySyntaxList.get(myIndex).getKey() != SyntaxType.LISTSTART) {
-				throw new SyntaxException(myResource.getString("error_left1") + root.getName());
+				throw new SyntaxException(myErrorMsg.getString("error_left1") + root.getName());
 			} else {
 				myIndex++;
 				while (mySyntaxList.get(myIndex).getKey() == SyntaxType.VARIABLE) {
@@ -525,12 +531,12 @@ public class Parser implements Observer {
 					root.addChild(c);
 				}
 				if (mySyntaxList.get(myIndex).getKey() != SyntaxType.LISTEND) {
-					throw new SyntaxException(myResource.getString("error_right1") + root.getName());
+					throw new SyntaxException(myErrorMsg.getString("error_right1") + root.getName());
 				}
 				myIndex++;
 			}
 			if (mySyntaxList.get(myIndex).getKey() != SyntaxType.LISTSTART) {
-				throw new SyntaxException(myResource.getString("error_left1") + root.getName());
+				throw new SyntaxException(myErrorMsg.getString("error_left1") + root.getName());
 			} else {
 				myManiControl.executeOnWorkspaceFunctions((Functions f) -> {
 					f.setCommand(root.getName(), root);
@@ -542,7 +548,7 @@ public class Parser implements Observer {
 				root.addChild(c);
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
-			throw new SyntaxException(myResource.getString("error_miss") + root.getName());
+			throw new SyntaxException(myErrorMsg.getString("error_miss") + root.getName());
 		}
 		int endIndex = myIndex;
 		String display = "";

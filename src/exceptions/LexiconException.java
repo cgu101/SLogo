@@ -1,4 +1,4 @@
-package backend.parser;
+package exceptions;
 
 public class LexiconException extends RuntimeException {
 	private static final long serialVersionUID = 6220982013505825370L;
