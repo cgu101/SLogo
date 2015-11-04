@@ -3,13 +3,20 @@ package GUI.viewbox;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
 import sharedobjects.Turtle;
+import sharedobjects.TurtleContainer;
 
-public class TurtleStateBox extends TitledPane {
+/**
+ * @author Inan
+ *
+ */
+public class TurtleStateBoxObserver extends TitledPane implements Observer{
 
     private ObservableList<String> turtleData;
     private Map<Integer, String> turtleInfo;
@@ -18,7 +25,7 @@ public class TurtleStateBox extends TitledPane {
     private ListView<String> listView;
     private final String stringFormat = "Turtle ID: %s\n" + "x=%s, y=%s\n" + "Visible=%s";
 
-    public TurtleStateBox (){
+    public TurtleStateBoxObserver (){
         this.setText("Turtle State List");
         this.setStyle("-fx-border-color: black;");
         this.setPrefSize(400,200);   
@@ -38,5 +45,13 @@ public class TurtleStateBox extends TitledPane {
         double x = turtle.getPosition()[0];
         double y = -turtle.getPosition()[1];
         return String.format(stringFormat, turtle.getID(), Math.abs(x)<0.5 ? 0:x, Math.abs(y)<0.5 ? 0:y, turtle.isShowing());
+    }
+
+    @Override
+    public void update (Observable o, Object arg) {
+        TurtleContainer turtleContainer = (TurtleContainer) o;
+                for(Turtle t: turtleContainer.getAllTurtles().values()){
+                        updateTurtleStateBox(t);                       
+                }
     }
 }

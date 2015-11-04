@@ -1,3 +1,6 @@
+// This entire file is part of my masterpiece.
+// Inan Tainwala
+
 package GUI;
 
 import java.awt.Dimension;
@@ -23,7 +26,6 @@ import GUI.turtlepane.CanvasObserver;
 import GUI.turtlepane.TurtleGroupObserver;
 import GUI.viewbox.CommandHistoryBox;
 import GUI.viewbox.FunctionListBox;
-import GUI.viewbox.TurtleStateBox;
 import GUI.viewbox.VariableListBox;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -40,75 +42,86 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import sharedobjects.UserInput;
 
+/**
+ * @author Inan and Abhishek
+ *
+ */
 public class SlogoView {
-
 	private static final Dimension DEFAULT_SIZE = new Dimension(1200, 730);
 	private static final String DEFAULT_RESOURCE_VIEW = "GUI.view";
-	protected static ResourceBundle myResource;
 	private static final String DEFAULT_LANGUAGE = "English";
+
+	protected static ResourceBundle myResource;
 
 	private Scene scene;
 
+	private CanvasObserver myTurtleCanvas;
+	private TurtleGroupObserver myTurtleGroup;
+	private UserInput myUserInputObservable;
+	
 	private CommandPromptDisplayBox commandBox;
-	private MessageDisplayBoxObserver messageBox;
+	private MessageDisplayBoxObserver messageBoxObserver;
 	private VariableListBox variableDisplayBox;
 	private CommandHistoryBox historyDisplayBox;
 	private FunctionListBox functionDisplayBox;
-
-	private CanvasObserver myTurtleCanvas;
-	private TurtleGroupObserver myTurtleGroup;
-	private BackgroundRectangleObserver myBackgroundRectangle;
-	private TurtleStateBox turtleStateBox;
-	private LineSlider lineSlider;
-	private OpacitySlider opacitySlider;
-
-	private UserInput myUserInputObservable;
+	private BackgroundRectangleObserver backgroundRectangleObserver;
 
 	private Map<String, AButton> myButtons;
 
+	private HBox menuBar;
+	private VBox bottomWindow;
+	private VBox rightWindow;
+	private HBox leftWindow;
+	private HBox centerWindow;
+	
+	
 	public SlogoView(CanvasObserver canvas, TurtleGroupObserver turtleGroup) {
-
-		myTurtleCanvas = canvas;
+	        myResource = ResourceBundle.getBundle(DEFAULT_RESOURCE_VIEW);
+	        myTurtleCanvas = canvas;
 		myTurtleGroup = turtleGroup;
+		factory();
+		scene = new Scene(initializeLayout(), DEFAULT_SIZE.width, DEFAULT_SIZE.height);
+	}
+	
+	private BorderPane initializeLayout () {
+	        BorderPane root = new BorderPane();
+	        root.setMaxSize(DEFAULT_SIZE.getWidth(), DEFAULT_SIZE.getHeight());
+	        root.setTop(menu());
+	        root.setCenter(centerBox());
+	        root.setBottom(bottomBox());
+	        root.setRight(rightBox());
+	        root.setLeft(leftBox());
+                return root;
+        }
 
-		myResource = ResourceBundle.getBundle(DEFAULT_RESOURCE_VIEW);
-		commandBox = new CommandPromptDisplayBox();
-		messageBox = new MessageDisplayBoxObserver();
-		variableDisplayBox = new VariableListBox(commandBox);
-		historyDisplayBox = new CommandHistoryBox(commandBox);
-		functionDisplayBox = new FunctionListBox(commandBox);
-		turtleStateBox = new TurtleStateBox();
-		myUserInputObservable = new UserInput(DEFAULT_LANGUAGE);
-		BorderPane root = new BorderPane();
-		ButtonFactory buttonFactory = new ButtonFactory(commandBox, messageBox, historyDisplayBox, myTurtleGroup,
-				myUserInputObservable, root);
+        private Node leftBox () {
+                leftWindow = new HBox();
+                return leftWindow;
+        }
 
-		myButtons = buttonFactory.getButtons();
-
-		root.setMaxSize(DEFAULT_SIZE.getWidth(), DEFAULT_SIZE.getHeight());
-
-		root.setTop(menu());
-		root.setCenter(centerBox());
-		root.setBottom(bottomBox());
-		root.setRight(rightBox());
-
-		scene = new Scene(root, DEFAULT_SIZE.width, DEFAULT_SIZE.height);
+        private void factory(){
+	        commandBox = new CommandPromptDisplayBox();
+                messageBoxObserver = new MessageDisplayBoxObserver();
+                variableDisplayBox = new VariableListBox(commandBox);
+                historyDisplayBox = new CommandHistoryBox(commandBox);
+                functionDisplayBox = new FunctionListBox(commandBox);
+                myUserInputObservable = new UserInput(DEFAULT_LANGUAGE);
+                myButtons = new ButtonFactory(commandBox, messageBoxObserver, historyDisplayBox, myTurtleGroup,
+                                              myUserInputObservable).getButtons();
 	}
 
 	private Node menu() {
-		HBox result = new HBox();
-		result.getChildren().addAll(createFileDropDown(), myButtons.get("UploadButton"), createLanguageDropDown(),
+		menuBar = new HBox();
+		menuBar.getChildren().addAll(createFileDropDown(), myButtons.get("UploadButton"), createLanguageDropDown(),
 				bgColorDropDown(), penColorDropDown(), lineTypeDropDown(), myButtons.get("HelpButton"));
-
-		return result;
+		return menuBar;
 	}
 
 	private Node bottomBox() {
-		VBox result = new VBox();
-		result.getChildren().add(messageAndClearBoxes());
-		result.getChildren().add(commandAndEnterBoxes());
-
-		return result;
+	        bottomWindow = new VBox();
+	        bottomWindow.getChildren().add(messageAndClearBoxes());
+	        bottomWindow.getChildren().add(commandAndEnterBoxes());
+		return bottomWindow;
 	}
 
 	public Scene getScene() {
@@ -124,8 +137,7 @@ public class SlogoView {
 			} else if (text.equalsIgnoreCase("Save Workspace")) {
 				// centerBox();
 			}
-			messageBox.setMessage(text + " executed");
-
+			messageBoxObserver.setMessage(text + " executed");
 		});
 		return fileDropDown;
 	}
@@ -135,7 +147,7 @@ public class SlogoView {
 		lineType.setOnAction(event -> {
 			String line = lineType.getValue();
 			myTurtleCanvas.setLineType(line);
-			messageBox.setMessage("Line type set to " + line);
+			messageBoxObserver.setMessage("Line type set to " + line);
 		});
 		return lineType;
 	}
@@ -145,7 +157,7 @@ public class SlogoView {
 		languageDropDown.setOnAction(event -> {
 			String lang = languageDropDown.getValue();
 			myUserInputObservable.setCurrentLanguage(lang);
-			messageBox.setMessage("Language Set to " + lang);
+			messageBoxObserver.setMessage("Language Set to " + lang);
 		});
 		return languageDropDown;
 	}
@@ -155,8 +167,8 @@ public class SlogoView {
 		bgColor.setOnAction(event -> {
 			String bgColorString = bgColor.getValue();
 			String color = bgColorString.substring(3);
-			myBackgroundRectangle.setBackgroundColor(color);
-			messageBox.setMessage("Background Color Set to " + color);
+			backgroundRectangleObserver.setBackgroundColor(color);
+			messageBoxObserver.setMessage("Background Color Set to " + color);
 		});
 		return bgColor;
 	}
@@ -167,42 +179,49 @@ public class SlogoView {
 			String penColorString = penColor.getValue();
 			String color = penColorString.substring(3);
 			myTurtleCanvas.setPenColor(color);
-			messageBox.setMessage("Pen Color Set to " + color);
+			messageBoxObserver.setMessage("Pen Color Set to " + color);
 		});
 		return penColor;
 	}
 
+	private VBox rightBox() {
+	    rightWindow = new VBox();
+	    rightWindow.getChildren().addAll(variableDisplayBox, historyDisplayBox, functionDisplayBox);
+	    return rightWindow;
+	}
+
 	private Node centerBox() {
+	        centerWindow = new HBox();
 		TabPane tabPane = new TabPane();
 		AnchorPane mainBox = new AnchorPane();
 		Tab tab = new Tab();
-		myBackgroundRectangle = new BackgroundRectangleObserver(Integer.parseInt(myResource.getString("canvasWidth")),
-				Integer.parseInt(myResource.getString("canvasHeight")));
-		mainBox.getChildren().addAll(myBackgroundRectangle, myTurtleCanvas, myTurtleGroup);
+		backgroundRectangleObserver = new BackgroundRectangleObserver();
+		mainBox.getChildren().addAll(backgroundRectangleObserver, myTurtleCanvas, myTurtleGroup);
 
 		tab.setContent(mainBox);
 		tab.setClosable(false);
 		tab.setText("New Workspace");
 		tabPane.getTabs().add(tab);
-		return tabPane;
+		centerWindow.getChildren().add(tabPane);
+		return centerWindow;
 	}
 
 	private Node messageAndClearBoxes() {
-		HBox result = new HBox();
-		result.getChildren().addAll(messageBox, myButtons.get("ClearCommandButton"), imageOpacitySlider());
-		return result;
+		HBox topHalf = new HBox();
+		topHalf.getChildren().addAll(messageBoxObserver, myButtons.get("ClearCommandButton"), imageOpacitySlider());
+		return topHalf;
 	}
 
 	private Node commandAndEnterBoxes() {
-		HBox result = new HBox();
-		result.getChildren().addAll(commandBox, myButtons.get("EnterCommandButton"), lineThicknessSlider());
-		return result;
+		HBox bottomHalf = new HBox();
+		bottomHalf.getChildren().addAll(commandBox, myButtons.get("EnterCommandButton"), lineThicknessSlider());
+		return bottomHalf;
 	}
 
 	private HBox lineThicknessSlider() {
 		HBox thicknessSlider = new HBox();
-		lineSlider = new LineSlider();
-		lineSlider.setValue(getTurtlePaneCanvas().getPenWidth());
+		LineSlider lineSlider = new LineSlider();
+		lineSlider.setValue(myTurtleCanvas.getPenWidth());
 
 		Label lineCaption = new Label(" Pen thickness: ");
 		lineCaption.setTextFill(Color.BLUE);
@@ -219,7 +238,7 @@ public class SlogoView {
 
 	private HBox imageOpacitySlider() {
 		HBox imageSlider = new HBox();
-		opacitySlider = new OpacitySlider();
+		OpacitySlider opacitySlider = new OpacitySlider();
 		Label opacityCaption = new Label(" Turtle opacity: ");
 		opacityCaption.setTextFill(Color.RED);
 		opacitySlider.valueProperty().addListener(new ChangeListener<Number>() {
@@ -231,14 +250,8 @@ public class SlogoView {
 		});
 		imageSlider.getChildren().addAll(opacitySlider, opacityCaption);
 		return imageSlider;
-
 	}
 
-	private VBox rightBox() {
-		VBox result = new VBox();
-		result.getChildren().addAll(variableDisplayBox, historyDisplayBox, functionDisplayBox, turtleStateBox);
-		return result;
-	}
 
 	public List<Observable> getObservables() {
 		@SuppressWarnings("serial")
@@ -266,19 +279,61 @@ public class SlogoView {
 		return variableDisplayBox;
 	}
 
-	public TurtleStateBox getTurtleStateBox() {
-		return turtleStateBox;
-	}
-
 	public void showError(Exception e) {
-		messageBox.setMessage(e.toString());
+		messageBoxObserver.setMessage(e.toString());
 	}
 
 	public Observer getMessageBox() {
-		return messageBox;
+		return messageBoxObserver;
 	}
-
+	
 	public Observer getRect() {
-		return myBackgroundRectangle;
+		return backgroundRectangleObserver;
 	}
+	
+	
+	/**Description: This method acts as an API that can be used to add elements to
+	 * the right window of the IDE.
+	 * 
+	 * @param node A JavaFX node 
+	 */
+	public void addElementToRightWindow(Node node){
+	        rightWindow.getChildren().add(node);
+	}
+	
+	/**Description: This method acts as an API that can be used to add elements to
+         * the left window of the IDE.
+         * 
+         * @param node A JavaFX node
+         */
+	public void addElementToLefttWindow(Node node){
+	        leftWindow.getChildren().add(node);
+        }
+
+	/**Description: This method acts as an API that can be used to add elements to
+         * the bottom window of the IDE.
+         * 
+         * @param node A JavaFX node
+         */
+	public void addElementToBottomWindow(Node node){
+	        centerWindow.getChildren().add(node);
+	}
+	
+	/**Description: This method acts as an API that can be used to add elements to
+         * the top window of the IDE.
+         * 
+         * @param node A JavaFX node
+         */
+	public void addElementToMenu(Node node){
+                menuBar.getChildren().add(node);
+        }
+	
+	/**Description: This method acts as an API that can be used to add elements to
+         * the center window of the IDE.
+         * 
+         * @param node A JavaFX node
+         */
+	public void addElementToCenterWindow(Node node){
+                centerWindow.getChildren().add(node);
+        }
 }

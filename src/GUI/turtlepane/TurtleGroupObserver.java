@@ -24,6 +24,10 @@ import javafx.util.Duration;
 import sharedobjects.Turtle;
 import sharedobjects.TurtleContainer;
 
+/**
+ * @author Inan
+ *
+ */
 public class TurtleGroupObserver extends Group implements Observer{
 
 	private static final String DEFAULT_GUI_RESOURCE = "GUI.view";

@@ -1,3 +1,6 @@
+// This entire file is part of my masterpiece.
+// Inan Tainwala
+
 package observers;
 
 import java.util.ArrayList;
@@ -6,15 +9,18 @@ import java.util.Observer;
 import GUI.SlogoView;
 import GUI.turtlepane.CanvasObserver;
 import GUI.turtlepane.TurtleGroupObserver;
+import GUI.viewbox.TurtleStateBoxObserver;
 
+/**
+ * @author Inan (Edited by Logan)
+ *
+ */
 public class ObserverFactory {
 
     private List<Observer> myObservers;
 
     private TurtleGroupObserver guiTurtleGroup;
     private CanvasObserver guiCanvas;
-
-    //    private SlogoView mySlogoView;
 
     public ObserverFactory () {
         this.myObservers = new ArrayList<Observer>();
@@ -28,7 +34,9 @@ public class ObserverFactory {
 
     public void createObserversWithGUIDependancies(SlogoView slogoView){
         myObservers.add(new FunctionVariableObserver(slogoView.getFunctionDisplayBox(), slogoView.getVariableDisplayBox()));
-        myObservers.add(new TurtleStateBoxObserver(slogoView.getTurtleStateBox()));
+        TurtleStateBoxObserver t = new TurtleStateBoxObserver();
+        slogoView.addElementToRightWindow(t);
+        myObservers.add(t);
         //No need for wrapper observer class here- MessageDisplayBox is only used in GUI once.
         myObservers.add(slogoView.getMessageBox());
         myObservers.add(slogoView.getRect());

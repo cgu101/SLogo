@@ -6,6 +6,10 @@ import java.util.Observer;
 import javafx.scene.control.TextArea;
 import responses.Response;
 
+/**
+ * @author Inan
+ *
+ */
 public class MessageDisplayBoxObserver extends TextArea implements Observer{
 
     public MessageDisplayBoxObserver () {

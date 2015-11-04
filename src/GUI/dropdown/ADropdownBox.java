@@ -4,6 +4,10 @@ import java.util.ResourceBundle;
 
 import javafx.scene.control.ComboBox;
 
+/**
+ * @author Inan
+ *
+ */
 public abstract class ADropdownBox extends ComboBox<String>{
 
     private static final String DROPDOWN_RESOURCE_PACKAGE = "GUI.Dropdown/dropdown";
