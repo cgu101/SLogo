@@ -1,3 +1,5 @@
+// This entire file is part of my masterpiece.
+// Connor Usry
 package GUI;
 
 import java.awt.Dimension;
@@ -38,14 +40,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import sharedobjects.PropertiesManager;
 import sharedobjects.UserInput;
 
 public class SlogoView {
 
-	private static final Dimension DEFAULT_SIZE = new Dimension(1200, 730);
-	private static final String DEFAULT_RESOURCE_VIEW = "GUI.view";
-	protected static ResourceBundle myResource;
-	private static final String DEFAULT_LANGUAGE = "English";
+	private static List<Integer> defaultSize = PropertiesManager.getIntList("defaultSize");
+	private static final Dimension DEFAULT_SIZE = new Dimension(defaultSize.get(0), defaultSize.get(1));
+	private static final String DEFAULT_LANGUAGE = PropertiesManager.getString("defaultLanguage");
 
 	private Scene scene;
 
@@ -71,7 +73,6 @@ public class SlogoView {
 		myTurtleCanvas = canvas;
 		myTurtleGroup = turtleGroup;
 
-		myResource = ResourceBundle.getBundle(DEFAULT_RESOURCE_VIEW);
 		commandBox = new CommandPromptDisplayBox();
 		messageBox = new MessageDisplayBoxObserver();
 		variableDisplayBox = new VariableListBox(commandBox);
@@ -85,6 +86,7 @@ public class SlogoView {
 
 		myButtons = buttonFactory.getButtons();
 
+		
 		root.setMaxSize(DEFAULT_SIZE.getWidth(), DEFAULT_SIZE.getHeight());
 
 		root.setTop(menu());
@@ -176,8 +178,8 @@ public class SlogoView {
 		TabPane tabPane = new TabPane();
 		AnchorPane mainBox = new AnchorPane();
 		Tab tab = new Tab();
-		myBackgroundRectangle = new BackgroundRectangleObserver(Integer.parseInt(myResource.getString("canvasWidth")),
-				Integer.parseInt(myResource.getString("canvasHeight")));
+		myBackgroundRectangle = new BackgroundRectangleObserver(PropertiesManager.getInt(("canvasWidth")),
+				PropertiesManager.getInt(("canvasHeight")));
 		mainBox.getChildren().addAll(myBackgroundRectangle, myTurtleCanvas, myTurtleGroup);
 
 		tab.setContent(mainBox);
