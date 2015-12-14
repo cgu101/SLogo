@@ -86,4 +86,8 @@ public class Workspace {
 		return turtleContainer.executeOnAllTurtles(lambda);
 	}
 
+	public void changeMapType(MapType m) {
+		turtleContainer.changeMapType(m);
+	}
+
 }

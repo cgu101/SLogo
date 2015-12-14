@@ -76,4 +76,8 @@ public class ManipulateController implements IWorkSpaceController {
 	public void tellDuvall2Dance() {
 		currWorkspace.tellDuvall2Dance();
 	}
+	
+	public void changeMapType(MapType m){
+		currWorkspace.changeMapType(m);
+	}
 }

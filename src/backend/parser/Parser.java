@@ -243,6 +243,9 @@ public class Parser implements Observer {
 			case ID:
 			case TURTLES:
 			case DUVALL:
+			case FENCE:
+			case WRAP:
+			case WINDOW:
 				parseExpression(root, 0);
 				break;
 			// with 1 argument

@@ -40,6 +40,7 @@ import backend.node.control.TOCOMMAND;
 import backend.node.control.USERCOMMAND;
 import backend.node.control.Variable;
 import backend.node.display.CLEARSTAMPS;
+import backend.node.display.FENCE;
 import backend.node.display.PC;
 import backend.node.display.SETBG;
 import backend.node.display.SETPALETTE;
@@ -48,6 +49,8 @@ import backend.node.display.SETPS;
 import backend.node.display.SETSH;
 import backend.node.display.SH;
 import backend.node.display.STAMP;
+import backend.node.display.WINDOW;
+import backend.node.display.WRAP;
 import backend.node.operations.AND;
 import backend.node.operations.ATAN;
 import backend.node.operations.COS;
@@ -154,6 +157,9 @@ public class CommandFactory {
 		registerNode(SyntaxType.STAMP, STAMP.class);
 		registerNode(SyntaxType.CLEARSTAMPS, CLEARSTAMPS.class);
 		registerNode(SyntaxType.CLEARSCREEN, CS.class);
+		registerNode(SyntaxType.FENCE, FENCE.class);
+		registerNode(SyntaxType.WINDOW, WINDOW.class);
+		registerNode(SyntaxType.WRAP, WRAP.class);
 		//// #
 		//// # Multiple Turtle Commands
 		//// #

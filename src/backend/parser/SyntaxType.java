@@ -77,6 +77,9 @@ public enum SyntaxType {
 	GETSHAPE,
 	STAMP,
 	CLEARSTAMPS,
+	FENCE,
+	WINDOW,
+	WRAP,
 //	#
 //	# Multiple Turtle Commands
 //	#

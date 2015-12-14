@@ -13,6 +13,7 @@ public class TurtleContainer extends Observable {
     private List<Turtle> activeTurtles;
     private List<Turtle> tempTurtles;
     private Turtle currentTurtle;
+    private MapType currMapType;
 
     public TurtleContainer() {
         allTurtles = new HashMap<Integer, Turtle>();
@@ -54,6 +55,7 @@ public class TurtleContainer extends Observable {
 
         double response = 0;
         for (Turtle turtle : turtles) {
+        	turtle.setMapType(currMapType);
             response = lambda.run(turtle);
         }
         setChanged();
@@ -62,6 +64,7 @@ public class TurtleContainer extends Observable {
     }
 
     public double executeOnCurrentTurtle(ITurtleLambda lambda){
+    	currentTurtle.setMapType(currMapType);
         Double back = lambda.run(currentTurtle); 
         setChanged();
         notifyObservers();
@@ -126,11 +129,16 @@ public class TurtleContainer extends Observable {
 
 		double response = 0;
 		for (Turtle turtle : turtles) {
+			turtle.setMapType(currMapType);
 			response = lambda.run(turtle);
 		}
 		setChanged();
         notifyObservers("turtle");
 		return response;
+	}
+
+	public void changeMapType(MapType m) {
+		currMapType = m;
 	}
 
 }

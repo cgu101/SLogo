@@ -7,14 +7,21 @@ public class Turtle {
 	private double heading;
 	private boolean showing;
 	private boolean active;
+	private double width;
+	private double height;
+	private MapType mapType;
 	
 	public Turtle(int id){
 		setID(id);
 		position = new double[]{0.0,0.0};
 		oldPosition = new double[]{0.0,0.0};
-		heading = 90;
+		heading = 90; 
 		showing = true;
 		active = true;
+		mapType = MapType.WINDOW;
+		
+		width = PropertiesManager.getDouble("canvasWidth");
+		height = PropertiesManager.getDouble("canvasHeight");
 	}
 
 	public void setID(int i){
@@ -27,10 +34,9 @@ public class Turtle {
 	
 	public void setPosition(double[] p){
 	        oldPosition = position;
-	        position = p;
-		System.out.println("Changing the current Turtle's position to..." + p[0] + ":" + p[1]);
+	        position = mapType.getNextPosition(p, width, height);
 	}
-	
+
 	public double[] getPosition(){
 		return position;
 	}
@@ -69,5 +75,9 @@ public class Turtle {
 	
 	public void deativate(){
 		active = false;
+	}
+	
+	public void setMapType(MapType m){
+		mapType = m;
 	}
 }
