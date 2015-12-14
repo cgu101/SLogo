@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import GUI.SlogoView;
+import GUI.TurtleStatusView;
 import backend.parser.Parser;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import sharedobjects.Workspace;
 public class Main extends Application {
 	public static final String TITLE = "Slogo";
 	private static SlogoView slogoViewFrontEnd;
+	private TurtleStatusView turtleView;
 	Scene scene;
 
 	public void start(Stage stage) throws Exception {
@@ -23,6 +25,7 @@ public class Main extends Application {
 		stage.setResizable(false);
 		stage.sizeToScene();
 		stage.show();
+		turtleView = new TurtleStatusView();
 	}
 
 	public static void main(String[] args) {

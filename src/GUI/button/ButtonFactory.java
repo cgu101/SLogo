@@ -74,6 +74,7 @@ public class ButtonFactory {
         myMessageBox.clear();
         myCommandBox.clear();
     }
+    
     private void uploadButtonEvent() {
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(null);

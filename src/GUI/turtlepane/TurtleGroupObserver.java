@@ -7,6 +7,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
 
+import GUI.TurtleStatusView;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.PathTransition;
@@ -48,6 +49,11 @@ public class TurtleGroupObserver extends Group implements Observer{
 		this.myTurtleImage = newImage;
 	}
 
+	// adding an API to get the turtle image
+	public Image getImage(){
+		return myTurtleImage;
+	}
+	
 	public void clear(){
 		this.getChildren().removeAll();
 	}
@@ -58,9 +64,9 @@ public class TurtleGroupObserver extends Group implements Observer{
 
 	private void drawTurtle(Turtle turtle, List<Turtle> activeTurtles) {
 		myTurtleIDs.add(turtle.getID());
-		ImageView turtleImage = new ImageView(myTurtleImage);
-		turtleImage.setX(turtle.getPosition()[0]+width/2.0-(myTurtleImage.getWidth()/2.0));
-		turtleImage.setY(turtle.getPosition()[1]+height/2.0-(myTurtleImage.getHeight()/2.0));
+		ImageView turtleImage = new ImageView(getImage());
+		turtleImage.setX(turtle.getPosition()[0]+width/2.0-(getImage().getWidth()/2.0));
+		turtleImage.setY(turtle.getPosition()[1]+height/2.0-(getImage().getHeight()/2.0));
 		turtleImage.setVisible(turtle.isShowing());
 		turtleImage.setRotate(90-turtle.getHeading());
 		if(!activeTurtles.contains(turtle)){
