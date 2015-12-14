@@ -26,6 +26,8 @@ import backend.node.commands.ST;
 import backend.node.commands.TELL;
 import backend.node.commands.TOWARDS;
 import backend.node.commands.TURTLES;
+import backend.node.commands.WINDOW;
+import backend.node.commands.WRAP;
 import backend.node.commands.XCOR;
 import backend.node.commands.YCOR;
 import backend.node.control.DOTIMES;
@@ -94,6 +96,8 @@ public class CommandFactory {
 		registerNode(SyntaxType.CLEARSCREEN, CS.class);
 		registerNode(SyntaxType.XCOORDINATE, XCOR.class);
 		registerNode(SyntaxType.YCOORDINATE, YCOR.class);
+		registerNode(SyntaxType.WRAP, WRAP.class);
+		registerNode(SyntaxType.WINDOW, WINDOW.class);
 
 		//// #
 		//// # Turtle Queries

@@ -1,6 +1,7 @@
 package backend.node.commands;
 
 import backend.node.Node;
+import backend.node.Node;
 import responses.Response;
 import sharedobjects.ManipulateController;
 

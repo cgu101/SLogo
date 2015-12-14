@@ -21,7 +21,6 @@ public class CanvasObserver extends Canvas implements Observer {
 	int myWidth, myHeight;
 	private Color myPenColor;
 	private boolean isDrawing;
-	@SuppressWarnings("unused")
 	private Map<Integer, Color> colorPalette;
 
 	public CanvasObserver() {

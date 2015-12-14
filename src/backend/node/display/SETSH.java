@@ -1,6 +1,7 @@
 package backend.node.display;
 
 import backend.node.Node;
+import exceptions.WontImplementException;
 import responses.Response;
 import responses.Success;
 import sharedobjects.DisplayProperties;

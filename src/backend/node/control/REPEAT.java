@@ -1,3 +1,5 @@
+// This entire file is part of my masterpiece.
+// Logan Rooper
 package backend.node.control;
 
 import backend.node.types.ControlStructure;
