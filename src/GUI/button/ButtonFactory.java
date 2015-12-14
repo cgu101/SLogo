@@ -93,8 +93,7 @@ public class ButtonFactory {
         String fileName;
         if (selectedFile != null) {
             fileName = selectedFile.getName();
-            myTurtleGroup
-                    .setImage(new Image(getClass().getClassLoader().getResourceAsStream(fileName)));
+            myTurtleGroup.setImage(new Image(getClass().getClassLoader().getResourceAsStream(fileName)));
             myMessageBox.setMessage(fileName + " uploaded");
         }
         else {
