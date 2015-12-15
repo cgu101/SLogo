@@ -479,6 +479,12 @@ public class Parser implements Observer {
 			case MAKEUSERINSTRUCTION:
 				parseMakeCmd(root);
 				break;
+			case WRAP:
+				System.out.println("1");
+				break;
+			case FENCE:
+				System.out.println("3");
+				break;
 			default:
 				Node toCmd = myManiControl.executeOnWorkspaceFunctions((Functions f) -> {
 					return f.getCommand(mySyntaxList.get(myIndex - 1).getValue());

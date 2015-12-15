@@ -99,6 +99,9 @@ public enum SyntaxType {
 //	#
 //	# Duvall
 //	#
-	DUVALL
+	DUVALL,
+	
+	WRAP,
+	FENCE
 }
 

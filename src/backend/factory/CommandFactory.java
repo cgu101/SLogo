@@ -7,6 +7,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import backend.node.DUVALL;
+import backend.node.FENCE;
 import backend.node.Node;
 import backend.node.commands.ASK;
 import backend.node.commands.ASKWITH;
@@ -29,6 +30,7 @@ import backend.node.commands.ST;
 import backend.node.commands.TELL;
 import backend.node.commands.TOWARDS;
 import backend.node.commands.TURTLES;
+import backend.node.commands.WRAP;
 import backend.node.commands.XCOR;
 import backend.node.commands.YCOR;
 import backend.node.control.DOTIMES;
@@ -177,6 +179,9 @@ public class CommandFactory {
 		registerNode(SyntaxType.USERCOMMAND, USERCOMMAND.class);
 		registerNode(SyntaxType.DUVALL, DUVALL.class);
 		
+		//SPECIAL EXTENSION 
+		registerNode(SyntaxType.WRAP, WRAP.class);
+		registerNode(SyntaxType.FENCE, FENCE.class);
 	}
 
 	public static void registerNode(SyntaxType type, Class<?> nodeClass) {
