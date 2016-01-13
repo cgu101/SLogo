@@ -7,7 +7,7 @@ Due Date: October 28, 2015
 
 Hours worked: ~50
 
-> This is the link to the Analysis Description: [Analysis - Slogo](http://www.cs.duke.edu/courses/cps108/current/assign/03_slogo/part4.php)
+> This is the link to the Project Description: [Slogo](http://www.cs.duke.edu/courses/cps108/current/assign/03_slogo/)
 
 ##Specifications
 My team of 5 sought to provide an integrated development environment that supports users to write SLogo programs. Unlike IDEs such as Eclipse, which are designed around files that represent a complete program, SLogo users should be able to command the turtle interactively on a per expression basis. This is the read-eval-print loop used in environments for interpreted languages such as Python, Lisp, and Smalltalk (even the command-line shell could be considered such an environment). Thus this IDE focuses on helping users to experiment with and manage expressions, building up complex expressions from previously entered ones and keeping the visual representation of the turtle appropriately updated.
